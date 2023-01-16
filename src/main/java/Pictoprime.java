@@ -17,9 +17,8 @@ public class Pictoprime {
             e.printStackTrace();
             return "Unable to load image";
         }
-        
-        ImageToAscii converter = new ImageToAscii(List.of("8049922777".split("")));
-        String imageNum = converter.convertImageToAscii(image, widths, contrastScaleFactor);
+    
+        String imageNum = ImageToAscii.convertImageToAscii(image, widths, contrastScaleFactor, List.of("8049922777".split("")));
         
         System.out.println(formatPrime(imageNum, widths));
         
