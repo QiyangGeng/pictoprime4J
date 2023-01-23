@@ -3,12 +3,26 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.qiyanggeng</groupId>
-    <artifactId>pictoprim4J</artifactId>
+    <groupId>com.qiyanggeng.pictoprime4j</groupId>
+    <artifactId>pictoprime4j</artifactId>
     <packaging>jar</packaging>
     <version>alpha-0.1.0</version>
-
     <name>Pictoprime4J</name>
+
+    <licenses>
+        <license>
+            <name>GNU General Public License v3 (GPLv3)</name>
+            <url>https://www.gnu.org/licenses/gpl-3.0.txt</url>
+        </license>
+    </licenses>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub QiyangGeng Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/QiyangGeng/pictoprime4J</url>
+        </repository>
+    </distributionManagement>
 
     <build>
         <plugins>
