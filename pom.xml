@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.qiyanggeng.pictoprime4j</groupId>
+    <groupId>github.qiyanggeng</groupId>
     <artifactId>pictoprime4j</artifactId>
     <packaging>jar</packaging>
     <version>alpha-0.1.0</version>
