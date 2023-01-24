@@ -17,17 +17,23 @@ public class Pictoprime {
             e.printStackTrace();
             return "Unable to load image";
         }
-    
+        
+        if(image == null) {
+            System.out.println("Unable to load image");
+            System.exit(4);
+        }
+        
         String imageNum = ImageToAscii.convertImageToAscii(image, widths, contrastScaleFactor, List.of("8049922777".split("")));
         
         System.out.println(formatPrime(imageNum, widths));
         
         String primeImage = PrimeSearch.findPrime(new BigInteger(imageNum), sophie);
+        
         return formatPrime(primeImage, widths);
     }
     
     public static String create(String filePath) {
-        return create(filePath, 128, 0.9f, false);
+        return create(filePath, 32, 0.9f, false);
     }
     
     public static String formatPrime(String prime, int width) {
