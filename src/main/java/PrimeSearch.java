@@ -3,6 +3,7 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -13,7 +14,7 @@ public class PrimeSearch {
     private static final Random RANDOM = new Random();
     
     private static final List<BigInteger> SMALL_PRIMES = generatePrimes(17389)
-            .stream().map(BigInteger::valueOf).collect(Collectors.toList());
+            .stream().map(BigInteger::valueOf).toList();
     
     private static final Settings settings = loadSettings();
     
@@ -274,47 +275,46 @@ public class PrimeSearch {
     
     private static Settings loadSettings() {
         try {
-            String settingsJson =  new String(Files.readAllBytes(Paths.get(PrimeSearch.class.getClassLoader().getResource("settings.json").toURI())));
+            URL settingsURL = PrimeSearch.class.getClassLoader().getResource("settings.json");
+
+            if(settingsURL == null)
+                return new Settings();
+
+            String settingsJson =  new String(Files.readAllBytes(Paths.get(settingsURL.toURI())));
             Gson gson = new Gson();
             return gson.fromJson(settingsJson, Settings.class);
         } catch(IOException | URISyntaxException exception) {
             exception.printStackTrace();
         }
-        return null;
+        return new Settings();
     }
     
     private static class Settings {
-        private Map<Character, Character[]> allowedModifications;
-        private Map<Character, String> lastDigitModification;
+        private final Map<Character, Character[]> allowedModifications = new HashMap<>() {{
+            put('0', new Character[] {'8', '9', '5'});
+            put('1', new Character[] {'7'});
+            put('2', new Character[] {'6'});
+            put('4', new Character[] {'9'});
+            put('5', new Character[] {'0'});
+            put('6', new Character[] {'2'});
+            put('7', new Character[] {'1'});
+            put('8', new Character[] {'0', '9'});
+            put('9', new Character[] {'4'});
+        }};
+        private final Map<Character, String> lastDigitModification = new HashMap<>() {{
+            put('0', "3");
+            put('2', "3");
+            put('4', "9");
+            put('6', "9");
+            put('8', "9");
+            put('5', "3");
+        }};
     
         public Map<Character, Character[]> getAllowedModifications() {
-            if(allowedModifications == null)
-                return new HashMap<>() {{
-                    put('0', new Character[] {'8', '9', '5'});
-                    put('1', new Character[] {'7'});
-                    put('2', new Character[] {'6'});
-                    put('4', new Character[] {'9'});
-                    put('5', new Character[] {'0'});
-                    put('6', new Character[] {'2'});
-                    put('7', new Character[] {'1'});
-                    put('8', new Character[] {'0', '9'});
-                    put('9', new Character[] {'4'});
-                }};
-            
             return allowedModifications;
         }
     
         public Map<Character, String> getLastDigitModification() {
-            if(lastDigitModification == null)
-                return new HashMap<>() {{
-                    put('0', "3");
-                    put('2', "3");
-                    put('4', "9");
-                    put('6', "9");
-                    put('8', "9");
-                    put('5', "3");
-                }};
-            
             return lastDigitModification;
         }
     }

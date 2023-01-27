@@ -6,7 +6,7 @@
     <groupId>github.qiyanggeng</groupId>
     <artifactId>pictoprime4j</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <name>Pictoprime4J</name>
 
     <dependencies>
