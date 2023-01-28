@@ -1,3 +1,5 @@
+package com.qiyanggeng.pictoprime4j;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;

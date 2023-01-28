@@ -1,3 +1,5 @@
+package com.qiyanggeng.pictoprime4j;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
