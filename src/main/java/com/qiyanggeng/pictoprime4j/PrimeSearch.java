@@ -18,10 +18,8 @@ public class PrimeSearch {
     private static final List<BigInteger> SMALL_PRIMES = generatePrimes(17389)
             .stream().map(BigInteger::valueOf).toList();
     
-    private static final Settings settings = loadSettings();
-    
+    private static final Settings settings = loadSettings("settings.json");
     private static final Map<Character, Character[]> ALLOWED_MODIFICATIONS = settings.getAllowedModifications();
-    
     private static final Map<Character, String> LAST_DIGIT_SUBSTITUTION = settings.getLastDigitModification();
     
     private static final int CORE_COUNT = Runtime.getRuntime().availableProcessors();
@@ -55,35 +53,9 @@ public class PrimeSearch {
                         }).collect(Collectors.toList()));
     
                 executors.shutdownNow();
-                long timeTakenMilli = TimeUnit.MILLISECONDS.convert(System.nanoTime() - startTime, TimeUnit.NANOSECONDS);
                 
-                if(sophie) {
-                    System.out.println("Trying to find almost Sophie Germain");
-                    BigInteger sophieGermain = findAlmostSophieGermain(result);
-                    if(sophieGermain != null) {
-                        System.out.printf("""
-                                {
-                                    prime: %s,
-                                    attempts: %d,
-                                    simultaneous: %d,
-                                    distinctTested: %d,
-                                    sophieGermain: %s,
-                                    Time: %d ms
-                                }
-                                %n""", result, attempts, CORE_COUNT, tested.size(), sophieGermain, timeTakenMilli);
-                        return result.toString();
-                    }
-                    System.out.println("Did not find any almost Sophie Germain");
-                }
-                System.out.printf("""
-                        {
-                            prime: %s,
-                            attempts: %d,
-                            simultaneous: %d,
-                            distinctTested: %d,
-                            Time: %d ms
-                        }
-                        """, result, attempts, CORE_COUNT, tested.size(), timeTakenMilli);
+                System.out.println(formatReport(result, attempts, tested.size(), sophie, startTime));
+                
                 return result.toString();
             } catch(Exception ignored) {}
             
@@ -126,7 +98,7 @@ public class PrimeSearch {
                             distinctTested: %d,
                             Time: %d ms
                         }
-                        """, result, attempts, CORE_COUNT, numTested, startTime);
+                        """, result, attempts, CORE_COUNT, numTested, timeTakenMilli);
     
         if(sophie) {
             BigInteger sophieGermain = findAlmostSophieGermain(result);
@@ -140,7 +112,7 @@ public class PrimeSearch {
                                 sophieGermain: %s,
                                 Time: %d ms
                             }
-                        """, result, attempts, CORE_COUNT, numTested, sophieGermain, startTime);
+                        """, result, attempts, CORE_COUNT, numTested, sophieGermain, timeTakenMilli);
         }
         
         return report;
@@ -252,10 +224,8 @@ public class PrimeSearch {
     
     /**
      * Returns a list of primes from 2 to at most n using the Sieve of Eratosthenes.
-     * https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
-     * https://www.baeldung.com/java-generate-prime-numbers
      * @param n The upper bound of the primes to generate
-     * @return  A list of primes smaller than n
+     * @return A list of primes smaller than n
      */
     public static List<Integer> generatePrimes(int n) {
         int sqrtN = (int) Math.sqrt(n);
@@ -275,9 +245,9 @@ public class PrimeSearch {
         return primes;
     }
     
-    private static Settings loadSettings() {
+    private static Settings loadSettings(String settingsPath) {
         try {
-            URL settingsURL = PrimeSearch.class.getClassLoader().getResource("settings.json");
+            URL settingsURL = PrimeSearch.class.getClassLoader().getResource(settingsPath);
 
             if(settingsURL == null)
                 return new Settings();

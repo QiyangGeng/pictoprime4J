@@ -10,7 +10,7 @@ import java.util.List;
 public class Pictoprime {
     public static String create(String filePath, int widths, float contrastScaleFactor, boolean sophie) throws IOException {
         BufferedImage image;
-        URL imageUrl = Pictoprime.class.getResource(filePath);
+        URL imageUrl = Pictoprime.class.getClassLoader().getResource(filePath);
 
         if(imageUrl == null)
             throw new RuntimeException("Image URL from file path is null");
